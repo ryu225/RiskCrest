@@ -173,7 +173,6 @@ main{min-height:calc(100vh - 200px)}
 .workspace-panel{background:var(--white);border:1px solid var(--line);padding:clamp(22px,3vw,42px);min-width:0;border-radius:12px}
 .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding-bottom:22px;border-bottom:1px solid var(--line)}
 .panel-head h2{font-size:clamp(25px,2.5vw,36px);margin-top:9px;line-height:1.2;letter-spacing:-.045em}
-.panel-trace{width:68px;height:14px;border-top:4px solid var(--sky);border-radius:40px;transform:rotate(-12deg);margin-top:19px}
 .identity-line{display:flex;align-items:center;gap:15px;padding:30px 0 22px}
 .avatar{width:58px;height:58px;display:flex;align-items:center;justify-content:center;background:var(--blue);color:var(--white);border-radius:12px;font-size:26px;font-weight:750;flex:none}
 .identity-line>div:last-child{display:flex;flex-direction:column;gap:3px}
