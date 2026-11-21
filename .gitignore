@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.env
+instance/*
+!instance/.gitkeep
+*.sqlite3
+*.sqlite3-*
+*.db
+*.key
+*.pem
+*.crt
+*.log
+.DS_Store

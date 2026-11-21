@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero"><div class="container hero-grid">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="tiny-glow"></span> SECURITY ENGINEERING / USER PORTAL</div>
+    <h1>One place for your account.<br><span>Built for trust.</span></h1>
+    <p class="lead">A clean, modern space to manage your profile, store personal notes, and experience thoughtful access controls.</p>
+    <div class="hero-actions"><a href="{{ '/dashboard' if user else '/register' }}" class="button button-primary">{{ 'Open dashboard' if user else 'Get started' }} <span>→</span></a><a class="button button-ghost" href="{{ '/dashboard' if user else '/login' }}">{{ 'View account' if user else 'I have an account' }}</a></div>
+    <div class="hero-meta"><span class="small-shield">✦</span><span>Simple by design</span><span class="meta-sep"></span><span>Protected by default</span></div>
+  </div>
+  <div class="hero-art" aria-hidden="true"><div class="art-orbit outer"></div><div class="art-orbit middle"></div><div class="art-orbit inner"></div><div class="art-corner top-left">SECURITY<br>ACTIVE</div><div class="art-corner bottom-right">01 / 05<br>PROTECTIONS</div><div class="art-center"><svg viewBox="0 0 120 140" fill="none"><path d="M60 8 14 28v34c0 33 18 54 46 67 28-13 46-34 46-67V28L60 8Z" fill="url(#sh)" stroke="#9CE2D6" stroke-width="2"/><path d="m40 69 13 13 28-31" stroke="#E6FFFA" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="sh" x1="14" y1="8" x2="106" y2="129"><stop stop-color="#214B5B"/><stop offset="1" stop-color="#0B2A39"/></linearGradient></defs></svg></div><div class="art-label">YOUR SPACE, SECURED</div></div>
+</div></section>
+<section class="features-section"><div class="container"><div class="section-heading"><div><span class="overline">THE FOUNDATION</span><h2>Small details. Strong foundations.</h2></div><p>Designed around the essentials of a reliable account experience.</p></div><div class="feature-grid">
+  <article class="feature-card"><div class="feature-index">01 / ENCRYPTION</div><div class="feature-icon">◎</div><h3>Protected information</h3><p>Personal details are encrypted before they reach the database.</p></article>
+  <article class="feature-card"><div class="feature-index">02 / ACCESS</div><div class="feature-icon">◇</div><h3>The right permissions</h3><p>Different account roles see only the resources intended for them.</p></article>
+  <article class="feature-card"><div class="feature-index">03 / SESSIONS</div><div class="feature-icon">⌁</div><h3>Secure sessions</h3><p>Time-limited, revocable authentication protects each sign-in.</p></article>
+</div></div></section>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="workspace"><div class="container"><div class="workspace-heading"><div><div class="overline">ADMINISTRATION / CONTROL CENTER</div><h1>Access <span>overview.</span></h1><p>Authorized account information and system activity.</p></div><div class="user-badge"><span class="badge-dot"></span>ADMINISTRATOR</div></div>
+  <div class="stats-grid"><div class="stat-card"><div>REGISTERED ACCOUNTS</div><strong>{{ accounts|length }}</strong><span>Across all roles</span></div><div class="stat-card"><div>PERSONAL NOTES</div><strong>{{ note_count }}</strong><span>Private, per-account</span></div><div class="stat-card"><div>ACCESS MODEL</div><strong>RBAC</strong><span>Role-based permissions</span></div></div>
+  <section class="dashboard-panel admin-table-panel"><div class="panel-head"><div><div class="overline">ACCOUNT DIRECTORY</div><h2>Registered members</h2></div><span class="panel-symbol">◈</span></div><div class="table-scroll"><table class="admin-table"><thead><tr><th>USERNAME</th><th>ROLE</th><th>CREATED</th></tr></thead><tbody>{% for account in accounts %}<tr><td><span class="member-initial">{{ account['username'][0]|upper }}</span><strong>{{ account['username'] }}</strong></td><td><span class="role-pill {{ 'role-admin' if account['role']=='admin' else '' }}">{{ account['role']|capitalize }}</span></td><td>{{ account['created_at'] }}</td></tr>{% endfor %}</tbody></table></div></section>
+</div></section>
+{% endblock %}
