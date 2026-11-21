@@ -22,7 +22,7 @@
 | Logout | `app/main.py`, `logout()` | Session revocation and cookie deletion |
 | Cookie and HTTPS headers | `app/main.py`, `security_headers()` | HSTS, CSP, no-store, other headers |
 | Local vulnerable baseline | `lab/main.py` | SQLi, MD5, raw HTML, broken RBAC, HTTP-only |
-| Access matrix | `README.md`, Vulnerability comparison | Visitor vs. user vs. administrator |
+| Access-control matrix | Submitted security report, section 4 | Visitor vs. standard user vs. administrator permissions |
 
 ## Demonstration and submission checklist
 

@@ -101,7 +101,7 @@ python -m pytest -q
 
 Tests use isolated temporary databases and keys, rather than modifying your personal account data. The suite covers secure routes, the vulnerable lab, and regression scenarios including CSRF, encrypted storage, role restrictions, XSS mitigation, and session revocation.
 
-**Verification:** The original local checkout reported **37 passing tests**. The GitHub version has two additional regression tests; run the command above after pulling to confirm the updated count in your own environment.
+**Verification (21 November 2026):** The current version passed **39 tests** on Windows and in a clean GitHub Actions Linux run. Run the command above to verify the project in your own environment.
 
 ## Project structure
 
@@ -117,10 +117,12 @@ RiskCrest/
 │   └── main.py              # Deliberately vulnerable local baseline
 ├── scripts/
 │   ├── create_admin.py      # Local administrator creation
-│   └── create_dev_cert.py   # Self-signed development TLS certificate
+│   ├── create_dev_cert.py   # Self-signed development TLS certificate
+│   └── capture_screenshots.py # Reproducible demo screenshot capture
 ├── tests/                   # Automated security regression tests
 ├── docs/
-│   └── DEMONSTRATION_GUIDE.md
+│   ├── DEMONSTRATION_GUIDE.md
+│   └── screenshots/         # Seven verified browser screenshots
 ├── instance/                # Runtime data; ignored by Git except .gitkeep
 ├── run_secure.py
 ├── run_lab.py
