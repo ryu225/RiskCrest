@@ -1,17 +1,17 @@
-# Sentinel Portal - Security Assessment Report
+# RiskCrest - Security Assessment Report
 
 **Project:** Building a Secure Web Application - Detection and Mitigation of Security Vulnerabilities  
 **Student:** Ryoouf Alsuwidany  
 **Student ID:** 443201098  
 **Assessment:** 15 points  
 **Due date:** Saturday, 21 November 2026  
-**Report date:** 18 November 2026
+**Report date:** 21 November 2026
 
 ## Executive summary
 
-Sentinel Portal is a Python/FastAPI web application providing user registration, login, account dashboards, personal notes, profile updates, administrator-only account listings, and logout. The project includes an isolated *before* application (`lab/main.py`) and a secured *after* application (`app/main.py`). Both share the user-interface templates for a fair, observable comparison but use **different databases**. The intentionally vulnerable version is restricted to a local demonstration environment. The final application enforces parameterized SQL queries, Argon2id password hashing and password policy, safe HTML rendering, role-based access control, encryption of sensitive data, and local HTTPS/TLS.
+RiskCrest is a Python/FastAPI web application providing user registration, login, account dashboards, personal notes, profile updates, administrator-only account listings, and logout. The project includes an isolated *before* application (`lab/main.py`) and a secured *after* application (`app/main.py`). Both share the user-interface templates for a fair, observable comparison but use **different databases**. The intentionally vulnerable version is restricted to a local demonstration environment. The final application enforces parameterized SQL queries, Argon2id password hashing and password policy, safe HTML rendering, role-based access control, encryption of sensitive data, and local HTTPS/TLS.
 
-**Verification:** The complete automated regression suite was executed on 18 November 2026. **37 tests passed.** A live TLS server was also started locally and its HTTPS response/security headers were checked. This evidence supports functional correctness in the tested environment, rather than claiming that the application is secure against every possible attack.
+**Verification:** The original automated suite passed 37 tests on 18 November 2026; two additional session/browser-history regression checks were added and the updated suite passed **39 tests** on 21 November 2026 in a separate test environment. A live TLS server was also started locally and its HTTPS response/security headers were checked. This evidence supports functional correctness in the tested environment, rather than claiming that the application is secure against every possible attack.
 
 ## 1. Application design and functionality
 
@@ -99,7 +99,7 @@ The *actual result* column below records verified observations from the local au
 | Lab request from a non-local client | Local-only lab refuses it | PASS - HTTP 403 |
 
 **Test command:** `pytest -q`  
-**Execution result:** **37 passed** (test environment; test count includes parameterized password cases).
+**Execution result:** **39 passed** (test environment; test count includes parameterized password cases).
 
 ## 4. Access-control matrix
 
@@ -146,7 +146,7 @@ The repository contains rendered screenshots for the responsive home page, regis
 
 ## 8. Conclusion
 
-The project satisfies the brief's required functionality and implements direct comparisons for the five security categories: SQL injection, password storage, stored XSS, authorization, and encryption/HTTPS. The completed local test suite reports **37 passing tests**, including checks for session revocation and CSRF handling. The vulnerable lab is intentionally unsafe and must remain isolated. The secured application illustrates sound baseline techniques but is a course demonstration, not a certificate of comprehensive production security.
+The project satisfies the brief's required functionality and implements direct comparisons for the five security categories: SQL injection, password storage, stored XSS, authorization, and encryption/HTTPS. The completed local test suite reports **39 passing tests**, including checks for session revocation and CSRF handling. The vulnerable lab is intentionally unsafe and must remain isolated. The secured application illustrates sound baseline techniques but is a course demonstration, not a certificate of comprehensive production security.
 
 ## References
 

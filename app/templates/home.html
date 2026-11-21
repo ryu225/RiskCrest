@@ -1,18 +1,57 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="hero"><div class="container hero-grid">
-  <div class="hero-copy">
-    <div class="eyebrow"><span class="tiny-glow"></span> SECURITY ENGINEERING / USER PORTAL</div>
-    <h1>One place for your account.<br><span>Built for trust.</span></h1>
-    <p class="lead">A clean, modern space to manage your profile, store personal notes, and experience thoughtful access controls.</p>
-    <div class="hero-actions"><a href="{{ '/dashboard' if user else '/register' }}" class="button button-primary">{{ 'Open dashboard' if user else 'Get started' }} <span>→</span></a><a class="button button-ghost" href="{{ '/dashboard' if user else '/login' }}">{{ 'View account' if user else 'I have an account' }}</a></div>
-    <div class="hero-meta"><span class="small-shield">✦</span><span>Simple by design</span><span class="meta-sep"></span><span>Protected by default</span></div>
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-ink container">
+    <div class="hero-copy">
+      <h1 id="hero-title">{% if lab %}Welcome in.<br><span class="second-line">Without safeguards.</span>{% else %}Welcome in.<br><span class="second-line">With permission.</span>{% endif %}</h1>
+      <p>{% if lab %}See the gaps. Learn the safeguards.{% else %}Make room for the things that are yours.{% endif %} {% if lab %}This local lab deliberately demonstrates unsafe account behavior. Use disposable test credentials only.{% else %}RiskCrest keeps account access clear, private notes personal, and permissions where they belong.{% endif %}</p>
+      <div class="hero-actions">
+        <a href="{{ '/dashboard' if user else '/register' }}" class="primary-button">{{ 'Open dashboard' if user else 'Create an account' }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+        <a href="#boundaries" class="secondary-link">See how access works</a>
+      </div>
+      <div class="hero-annotation"><span class="annotation-rule" aria-hidden="true"></span><p>{% if lab %}This version is for local security demonstrations only. Nothing here is suitable for real accounts.{% else %}A safer sign-in experience, and a separate local lab that shows why the safeguards matter.{% endif %}</p></div>
+    </div>
   </div>
-  <div class="hero-art" aria-hidden="true"><div class="art-orbit outer"></div><div class="art-orbit middle"></div><div class="art-orbit inner"></div><div class="art-corner top-left">SECURITY<br>ACTIVE</div><div class="art-corner bottom-right">01 / 05<br>PROTECTIONS</div><div class="art-center"><svg viewBox="0 0 120 140" fill="none"><path d="M60 8 14 28v34c0 33 18 54 46 67 28-13 46-34 46-67V28L60 8Z" fill="url(#sh)" stroke="#9CE2D6" stroke-width="2"/><path d="m40 69 13 13 28-31" stroke="#E6FFFA" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="sh" x1="14" y1="8" x2="106" y2="129"><stop stop-color="#214B5B"/><stop offset="1" stop-color="#0B2A39"/></linearGradient></defs></svg></div><div class="art-label">YOUR SPACE, SECURED</div></div>
-</div></section>
-<section class="features-section"><div class="container"><div class="section-heading"><div><span class="overline">THE FOUNDATION</span><h2>Small details. Strong foundations.</h2></div><p>Designed around the essentials of a reliable account experience.</p></div><div class="feature-grid">
-  <article class="feature-card"><div class="feature-index">01 / ENCRYPTION</div><div class="feature-icon">◎</div><h3>Protected information</h3><p>Personal details are encrypted before they reach the database.</p></article>
-  <article class="feature-card"><div class="feature-index">02 / ACCESS</div><div class="feature-icon">◇</div><h3>The right permissions</h3><p>Different account roles see only the resources intended for them.</p></article>
-  <article class="feature-card"><div class="feature-index">03 / SESSIONS</div><div class="feature-icon">⌁</div><h3>Secure sessions</h3><p>Time-limited, revocable authentication protects each sign-in.</p></article>
+  <div class="hero-blue" aria-hidden="true">
+    <svg class="flow-art" viewBox="0 0 760 760" preserveAspectRatio="xMidYMid slice"><path d="M802 19C587-17 651 212 448 229S203 424 356 513 508 654 220 813"/><path d="M868 85C671 32 706 251 510 292S266 452 425 555 576 709 316 846"/><path d="M883 158C730 80 740 292 569 355S343 492 483 593 666 740 449 857"/></svg>
+    <span class="hero-coral-slice"></span>
+  </div>
+  <div class="product-surface" id="preview-panel">
+    <div class="interface-titlebar"><span class="tiny-signet" aria-hidden="true">R</span><div><strong>RiskCrest ID</strong><span>Personal access</span></div><span class="interface-edition">Sign-in design study</span></div>
+    <div class="interface-content"><h2>Good to have you back.</h2><p>This is where your private space begins.</p>
+      <div class="illustrative-fields" role="img" aria-label="Illustration of the RiskCrest sign-in form with labeled username and password fields, and a sign-in action. It does not submit data.">
+        <div class="visual-field"><span>Username</span><div class="visual-value">Enter your username <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 19c.8-3.6 3-5.4 6.5-5.4s5.7 1.8 6.5 5.4"/></svg></div></div>
+        <div class="visual-field"><span>Password</span><div class="visual-value"><span class="pw-bullets">● ● ● ● ● ● ● ●</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12s3.5-5 9-5 9 5 9 5-3.5 5-9 5-9-5-9-5Z"/><circle cx="12" cy="12" r="2.4"/></svg></div></div>
+        <div class="visual-signin">Sign in <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></div>
+      </div>
+    </div>
+    <div class="interface-footer"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 10V7a6 6 0 1 1 12 0v3M5 10h14v11H5V10Z"/></svg> Access checked before entry</span><span>Visual prototype</span></div>
+  </div>
+  <div class="boundary-slip" aria-label="Illustrative access decision"><span class="slip-rail">Access decision</span><div><span class="slip-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 13 9 18 20 6"/></svg></span><strong>Signed-in owner</strong><span class="slip-detail">Personal dashboard <b>Allowed</b></span></div></div>
+</section>
+
+<section class="transition-note" aria-label="RiskCrest promise"><div class="container transition-inner"><p>{% if lab %}<strong>See how it breaks.</strong> Then see how to protect it.{% else %}<strong>The welcome is easy.</strong> Built for trust. The security is intentional.{% endif %}</p><span>Secure-by-design user management</span></div></section>
+
+<section class="rule-section" id="boundaries" aria-labelledby="boundaries-title">
+  <div class="container rule-layout">
+    <div class="rule-intro"><h2 id="boundaries-title">The right access.<br>Nothing extra.</h2><p>{% if lab %}This lab deliberately skips role enforcement. In the secure version, access rules are checked by the server.{% else %}Every account has a place. The rules decide which doors open—not the appearance of a button or the contents of a URL.{% endif %}</p><div class="rule-gate" aria-hidden="true"><svg viewBox="0 0 280 230"><path class="gate-outer" d="M32 215V112C32 49 75 16 140 16s108 33 108 96v103"/><path class="gate-mid" d="M65 215V122C65 73 91 51 140 51s75 22 75 71v93"/><path class="gate-inner" d="M97 215V135c0-29 15-45 43-45s43 16 43 45v80"/><path class="gate-inset" d="M129 170h22m-11-11v22"/></svg></div></div>
+    <div class="policy-artifact" id="policy-demo">
+      <div class="policy-heading"><div><h3>Permission, made visible.</h3><p>Try switching roles to see how the policy changes.</p></div><div class="role-switch" role="group" aria-label="Preview account role"><button type="button" class="role-button selected" aria-pressed="true" data-role="user">Regular user</button><button type="button" class="role-button" aria-pressed="false" data-role="admin">Administrator</button></div></div>
+      <div class="policy-columns" aria-hidden="true"><span>Area</span><span>Permission</span></div>
+      <div class="policy-row"><div><strong>Personal dashboard</strong><span>Account owner can access their space</span></div><span class="policy-status is-allowed" data-policy="dashboard"><i aria-hidden="true"></i> Allowed</span></div>
+      <div class="policy-row"><div><strong>Administrator area</strong><span data-reason="admin">Reserved for administrators</span></div><span class="policy-status is-denied" data-policy="admin"><i aria-hidden="true"></i> Denied</span></div>
+      <div class="policy-row"><div><strong>After signing out</strong><span>Old sessions no longer grant access</span></div><span class="policy-status is-denied" data-policy="logout"><i aria-hidden="true"></i> Denied</span></div>
+      <div class="policy-bottom"><span>Illustrative authorization policy</span><span class="small-bracket" aria-hidden="true">↳</span><p>{% if lab %}The real lab does not enforce these rules. This diagram illustrates how the secure version should work.{% else %}Permissions are enforced by the server, not by hiding links.{% endif %}</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="method-section" id="method" aria-labelledby="method-title"><div class="container method-layout"><div class="method-head"><h2 id="method-title">One product.<br>Two perspectives.</h2><p>RiskCrest includes a secure account experience and a separate, intentionally vulnerable local demonstration for learning how defenses work.</p></div><div class="method-comparison">
+  <div class="method-row"><div class="method-index">01</div><div><h3>See the weakness.</h3><p>In the isolated lab, unsafe queries, untrusted content, and missing authorization reveal what can go wrong.</p></div><span class="method-tag method-tag-coral">Vulnerable lab</span></div>
+  <div class="method-row"><div class="method-index">02</div><div><h3>See the boundary.</h3><p>In the secure version, parameterized queries, output safety, permission checks, and revocable sessions protect access.</p></div><span class="method-tag method-tag-blue">Secure app</span></div>
+  <div class="method-row method-row-last"><div class="method-index">03</div><div><h3>Keep your private things private.</h3><p>Personal notes, encrypted profile data, and administrator-only views are handled with deliberate access rules.</p></div><span class="method-tag method-tag-navy">Your account</span></div>
 </div></div></section>
+
+<section class="closing-section" aria-labelledby="closing-title"><div class="container closing-layout"><div><h2 id="closing-title">A better welcome<br>starts with a boundary.</h2><p>{% if lab %}Explore the controlled, intentionally vulnerable version with disposable test credentials.{% else %}Secure access without making everyday account management feel complicated.{% endif %}</p></div><a href="{{ '/dashboard' if user else '/register' }}" class="closing-action">{{ 'Open your dashboard' if user else 'Create your account' }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></div><svg class="closing-ribbon" viewBox="0 0 400 180" aria-hidden="true"><path d="M-10 130C92 50 141 163 238 78S371 56 420 9"/></svg></section>
 {% endblock %}

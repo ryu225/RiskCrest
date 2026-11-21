@@ -237,3 +237,28 @@ def test_dev_tls_certificate_has_localhost_san(tmp_path):
     names = cert.extensions.get_extension_for_class(x509.SubjectAlternativeName).value
     assert 'localhost' in names.get_values_for_type(x509.DNSName)
     assert key_file.exists()
+
+def test_revoked_cookie_cannot_restore_authentication(secure_client):
+    register(secure_client)
+    login(secure_client)
+    old_ticket = secure_client.cookies.get('sg_auth')
+    assert old_ticket
+    assert form_post(secure_client, '/logout', {}).status_code == 303
+    assert not secure_client.cookies.get('sg_auth')
+    # Reusing even the former encrypted token must not recover the session.
+    secure_client.cookies.set('sg_auth', old_ticket)
+    assert secure_client.get('/dashboard', follow_redirects=False).status_code == 303
+    assert secure_client.get('/admin', follow_redirects=False).status_code == 303
+
+
+def test_private_pages_include_history_restoration_safeguard(secure_client):
+    register(secure_client)
+    login(secure_client)
+    private = secure_client.get('/dashboard')
+    assert 'data-secure-private-page="true"' in private.text
+    script = secure_client.get('/static/app.js').text
+    assert "addEventListener('pagehide'" in script
+    assert "addEventListener('pageshow'" in script
+    assert 'event.persisted' in script
+    assert 'window.location.reload()' in script
+    assert 'data-secure-private-page' not in secure_client.get('/').text

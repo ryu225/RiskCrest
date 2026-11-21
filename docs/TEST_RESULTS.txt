@@ -1,2 +1,5 @@
-.....................................                                    [100%]
-37 passed in 1.78s
+Date: 2026-11-21
+Command: python -m pytest -q
+Result: 39 passed (separate Linux Python 3.13 test environment)
+Scope: Security and application regression tests, including SQL injection, XSS, role access, CSRF, encryption, TLS settings, session revocation, and browser-history protections.
+Windows verification: Run the test suite locally after pulling changes.

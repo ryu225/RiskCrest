@@ -1,4 +1,4 @@
-# Sentinel Portal - Short demonstration guide
+# RiskCrest - Short demonstration guide
 
 ## Recommended demonstration order (about 5 minutes)
 

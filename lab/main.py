@@ -54,7 +54,7 @@ def initialize_lab(database: Path):
 def create_lab(*, database: Path | None = None) -> FastAPI:
     database = Path(database or ROOT / 'instance' / 'lab.sqlite3')
     initialize_lab(database)
-    app = FastAPI(title='Sentinel Portal local vulnerability lab', docs_url=None, redoc_url=None, openapi_url=None)
+    app = FastAPI(title='RiskCrest local vulnerability lab', docs_url=None, redoc_url=None, openapi_url=None)
     app.add_middleware(SessionMiddleware, secret_key=secrets.token_hex(32), https_only=False,
                        session_cookie='lab_session')
     app.mount('/static', StaticFiles(directory=ROOT / 'app' / 'static'), name='static')

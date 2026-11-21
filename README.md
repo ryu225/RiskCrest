@@ -1,8 +1,8 @@
-# Sentinel Portal
+# RiskCrest
 
 **A secure web application with a local before/after vulnerability laboratory.**
 
-Sentinel Portal is a simple account-management application created for the project **"Building a Secure Web Application - Detection and Mitigation of Security Vulnerabilities."** It demonstrates account registration, sign-in, a personalized dashboard, encrypted contact details, private notes, role-based administration, and logout that immediately invalidates the authentication session.
+RiskCrest is a simple account-management application created for the project **"Building a Secure Web Application - Detection and Mitigation of Security Vulnerabilities."** It demonstrates account registration, sign-in, a personalized dashboard, encrypted contact details, private notes, role-based administration, and logout that immediately invalidates the authentication session.
 
 The repository has two deliberately distinct applications:
 
@@ -13,7 +13,7 @@ The repository has two deliberately distinct applications:
 
 **Do not deploy the vulnerable lab or use real credentials in it.** Both runners bind to `127.0.0.1`, so they are accessible only on the computer running them. The lab also rejects non-loopback request clients.
 
-![Secure application home page](docs/screenshots/01-home.png)
+![RiskCrest homepage (captured project screenshot)](docs/screenshots/01-home.png)
 
 ## 1. Requirements
 
@@ -113,7 +113,7 @@ See `docs/SECURITY_REPORT.pdf` for the testing table, access-control matrix, exp
 ## 5. Application structure
 
 ```text
-SentinelPortal/
+RiskCrest/
 ├── app/
 │   ├── main.py                 # Secure routes, validation, RBAC, sessions, HTTPS
 │   ├── db.py                   # SQLite schema, transactions, parameterized access
@@ -164,20 +164,11 @@ Screenshots are in `docs/screenshots/`:
 
 For a live demonstration: show the secure registration/login flow; demonstrate a standard user gets 403 from `/admin`; save an XSS-style note safely; show encrypted data in SQLite; log out and revisit `/dashboard`; then start the lab and repeat the corresponding unsafe examples. Finish by running `pytest -q`.
 
-## 8. Repository submission
+## 8. GitHub and project updates
 
-Create a **new empty GitHub repository** and push the project files:
+This repository is the source of the RiskCrest application. To get the latest changes into an existing VS Code checkout, run `git pull origin main` from the project root, then run `python -m pytest -q`.
 
-```bash
-git init
-git add .
-git commit -m "Build account portal and security demonstration"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
-git push -u origin main
-```
-
-Replace `YOUR_USERNAME` and `YOUR_REPOSITORY` with your actual GitHub values. Review `git status` before pushing; ensure no files from `instance/` are staged. Submit the **real GitHub repository link** required by the assignment. A ZIP archive on its own does not replace the required repository URL.
+The application runs **locally**; publishing its code to GitHub does not host the website. Never publish databases, credentials, private certificates, or runtime encryption keys. The vulnerable comparison app must never be deployed to a public server.
 
 ## 9. Scope and references
 

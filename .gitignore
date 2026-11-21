@@ -1,9 +1,26 @@
+# Python caches and generated outputs
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Local environments and credentials
 .venv/
 venv/
 .env
+.env.*
+!.env.example
+.vscode/
+.idea/
+
+# Databases, secrets, certificates, and generated runtime data
 instance/*
 !instance/.gitkeep
 *.sqlite3
@@ -13,4 +30,7 @@ instance/*
 *.pem
 *.crt
 *.log
+
+# OS files
 .DS_Store
+Thumbs.db

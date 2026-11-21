@@ -30,7 +30,7 @@ def create_app(*, database: Path | None = None, keys_dir: Path | None = None,
     keys_dir = Path(keys_dir or ROOT / 'instance' / 'keys')
     initialize(database)
     protection = Protection(keys_dir)
-    app = FastAPI(title='Sentinel Portal', docs_url=None, redoc_url=None, openapi_url=None)
+    app = FastAPI(title='RiskCrest', docs_url=None, redoc_url=None, openapi_url=None)
     app.mount('/static', StaticFiles(directory=ROOT / 'app' / 'static'), name='static')
     app.state.database = database
     app.state.protection = protection

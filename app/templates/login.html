@@ -1,9 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="auth-section"><div class="container auth-grid">
-  <div class="auth-intro"><div class="overline">ACCOUNT ACCESS / 01</div><h1>Welcome<br><em>back.</em></h1><p>Your workspace is ready when you are. Sign in to view your profile and notes.</p><div class="auth-decoration"><span class="deco-line"></span><span>PRIVATE BY DESIGN</span></div></div>
-  <div class="form-card"><div class="form-header"><div class="form-icon">↗</div><h2>Sign in</h2><p>Enter your credentials to continue.</p></div>
-  {% if error %}<div class="alert alert-error" role="alert">{{ error }}</div>{% endif %}{% if success %}<div class="alert alert-success" role="status">{{ success }}</div>{% endif %}{% if info %}<div class="alert alert-info">{{ info }}</div>{% endif %}
-  <form method="post" action="/login" class="account-form"><input type="hidden" name="_csrf" value="{{ csrf_token }}"><label for="username">Username</label><input id="username" name="username" type="text" autocomplete="username" required maxlength="60" placeholder="Your username" value="{{ (values or {}).get('username', '') }}"><label for="password">Password</label><div class="password-wrap"><input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Enter your password"><button type="button" class="password-toggle" data-target="password" aria-label="Show password">Show</button></div><button type="submit" class="button button-primary button-full">Sign in <span>→</span></button></form><div class="form-footer">New to Sentinel Portal? <a href="/register">Create an account</a></div></div>
-</div></section>
+<section class="auth-page">
+  <div class="container auth-layout">
+    <div class="auth-story">
+      <div class="auth-story-content"><span class="story-rule" aria-hidden="true"></span><h1>Welcome<br>back inside.</h1><p>{% if lab %}This intentionally insecure sign-in helps demonstrate login bypass and session risks.{% else %}One sign-in. Your own private space, with access checked before every protected page.{% endif %}</p>
+      <div class="auth-story-steps" aria-label="How access works"><div><span>01</span><strong>Identify</strong></div><div><span>02</span><strong>Authorize</strong></div><div><span>03</span><strong>Continue</strong></div></div></div>
+      <svg class="auth-story-curves" viewBox="0 0 600 420" aria-hidden="true"><path d="M-60 360C180 390 150 90 350 95s170 160 360-15"/><path d="M-70 400C210 450 194 150 376 150s200 170 370 18"/></svg>
+    </div>
+    <div class="auth-form-panel"><div class="auth-panel-heading"><span class="surface-index">Your account</span><h2>Sign in to RiskCrest.</h2><p>Enter your username and password to continue.</p></div>
+      {% if error %}<div class="alert alert-error" role="alert">{{ error }}</div>{% endif %}
+      {% if success %}<div class="alert alert-success" role="status">{{ success }}</div>{% endif %}
+      {% if info %}<div class="alert alert-info" role="status">{{ info }}</div>{% endif %}
+      <form method="post" action="/login" class="account-form"><input type="hidden" name="_csrf" value="{{ csrf_token }}"><label for="username">Username</label><input id="username" name="username" type="text" autocomplete="username" required maxlength="60" placeholder="Your username" value="{{ (values or {}).get('username', '') }}"><label for="password">Password</label><div class="password-wrap"><input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Your password"><button type="button" class="password-toggle" data-target="password" aria-label="Show password">Show</button></div><button class="primary-button form-submit" type="submit">Sign in <span aria-hidden="true">↗</span></button></form>
+      <div class="auth-form-bottom">New to RiskCrest? <a href="/register">Create an account</a></div>
+      <p class="auth-fineprint">{% if lab %}This vulnerable lab does not securely validate credentials.{% else %}Private account pages require an active authorized session.{% endif %}</p>
+    </div>
+  </div>
+</section>
 {% endblock %}
