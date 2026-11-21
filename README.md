@@ -1,34 +1,34 @@
 # RiskCrest
 
-**A secure web application with a local before/after vulnerability laboratory.**
+**A secure account-management web application with an isolated, intentionally vulnerable demonstration lab.**
 
-RiskCrest is a simple account-management application created for the project **"Building a Secure Web Application - Detection and Mitigation of Security Vulnerabilities."** It demonstrates account registration, sign-in, a personalized dashboard, encrypted contact details, private notes, role-based administration, and logout that immediately invalidates the authentication session.
+RiskCrest is a local cybersecurity project built with Python, FastAPI, Jinja2, and SQLite. It pairs a secure application with a separate vulnerable baseline, allowing the same security concepts to be demonstrated before and after mitigation.
 
-The repository has two deliberately distinct applications:
+The application includes account registration, sign-in, a private dashboard, notes, optional encrypted contact details, administrator access, and session-aware sign-out.
 
-| Application | Purpose | Address | Database |
-|---|---|---|---|
-| **Secure application** (`app/`) | The final, fixed implementation | `https://127.0.0.1:5443` | `instance/secure.sqlite3` |
-| **Vulnerable lab** (`lab/`) | The *before* implementation, for controlled testing **only** | `http://127.0.0.1:5001` | `instance/lab.sqlite3` |
+## Applications
 
-**Do not deploy the vulnerable lab or use real credentials in it.** Both runners bind to `127.0.0.1`, so they are accessible only on the computer running them. The lab also rejects non-loopback request clients.
+| Application | Local address | Purpose |
+| --- | --- | --- |
+| Secure application (`app/`) | `https://127.0.0.1:5443` | Account management with security controls |
+| Vulnerable lab (`lab/`) | `http://127.0.0.1:5001` | Controlled demonstrations of common vulnerabilities |
 
-![RiskCrest homepage (captured project screenshot)](docs/screenshots/01-home.png)
+**Safety:** Both servers bind to `127.0.0.1`. Never expose the vulnerable lab to the public internet, deploy it to a shared environment, or use real credentials in it.
 
-## 1. Requirements
+## Features and security controls
 
-- Python **3.11 or newer**
-- pip and a web browser
-- Windows, macOS, or Linux
-- Internet access for installing Python packages on first setup
+- **Authentication:** Username/password sign-in with Argon2id password hashes, password policy, encrypted session tickets, server-side session records, and logout revocation.
+- **Private accounts:** Personal dashboard, optional encrypted email address, and individually owned notes.
+- **Authorization:** Server-enforced role-based access control (RBAC). Administrators are created through a local command; public registration cannot grant administrator privileges.
+- **Input handling:** Parameterized SQL queries, input validation, sanitized note content, and HTML escaping.
+- **Transport and session protections:** Local HTTPS/TLS, secure cookie flags, CSRF protection, security headers, expiration, and private-page cache controls.
+- **Learning comparison:** Isolated SQL injection, weak hashing, XSS, broken access-control, and plaintext/HTTP examples in the intentionally vulnerable lab.
 
-The secure implementation uses FastAPI, SQLite, Jinja2, Argon2id (`argon2-cffi`), Bleach for HTML sanitization, and `cryptography` Fernet for authenticated encryption. Automated tests use `pytest` and FastAPI's test client.
+## Run the secure application
 
-## 2. Quick start: secure app
+Requirements: Python 3.11 or later, pip, and a web browser. Run commands from the repository root.
 
-Run these commands from the root folder containing `README.md`.
-
-### Windows (PowerShell)
+**Windows PowerShell:**
 
 ```powershell
 py -m venv .venv
@@ -38,7 +38,7 @@ python scripts/create_dev_cert.py
 python run_secure.py
 ```
 
-### macOS / Linux
+**macOS / Linux:**
 
 ```bash
 python3 -m venv .venv
@@ -48,25 +48,21 @@ python scripts/create_dev_cert.py
 python run_secure.py
 ```
 
-Open **https://127.0.0.1:5443**. A browser security warning is expected because the generated certificate is **self-signed and valid for local demonstration only**. In a local test environment, choose the browser's option to continue. Never treat a self-signed certificate as equivalent to a publicly trusted production certificate.
+Open **https://127.0.0.1:5443** to register and sign in.
 
-Create an ordinary account through **Create account**, then sign in. An administrator must be provisioned separately (see below).
-
-**Password policy:** at least 8 characters; at least one uppercase letter, lowercase letter, digit, and special character. The registration form displays these requirements, and the server enforces them.
+The generated development certificate is self-signed, so the browser may display a certificate warning. This certificate is **only for local development** and is not a replacement for a publicly trusted production certificate.
 
 ### Create an administrator
 
-In another terminal with the virtual environment active:
+With the virtual environment active, run:
 
 ```bash
 python -m scripts.create_admin --username portal_admin
 ```
 
-Enter a unique strong password when prompted; the password is **not** passed as a shell argument. You can then sign in with that administrator account and open `/admin`. Ordinary registration never grants the administrator role.
+Enter the password securely when prompted. Ordinary registration always creates a standard user.
 
-**Important:** The encrypted database fields depend on the locally generated keys in `instance/keys/`. These keys survive application restarts, but should never be committed, copied into a public repository, or deleted while encrypted data must remain readable. `.gitignore` excludes the database, keys, certificates, and environment secrets.
-
-## 3. Run the vulnerable *before* lab
+### Run the local vulnerability lab
 
 In a separate terminal:
 
@@ -74,111 +70,77 @@ In a separate terminal:
 python run_lab.py
 ```
 
-Open **http://127.0.0.1:5001**. The isolated lab contains *fictional* sample accounts:
+Open **http://127.0.0.1:5001**. The fictional demonstration credentials defined by the lab are:
 
 | Username | Password | Role |
-|---|---|---|
+| --- | --- | --- |
 | `lab_user` | `LabPass1!` | Standard user |
 | `lab_admin` | `LabAdmin1!` | Administrator |
 
-This app deliberately contains weak MD5 password hashes, SQL string interpolation, unsafe HTML rendering, missing role checks, and no encrypted email or HTTPS. They exist only to compare vulnerable behavior with the mitigations in `app/main.py` and `app/security.py`.
+Use these only in the local vulnerable lab; they are not suitable for actual accounts.
 
-### Controlled manual demonstrations (local lab only)
+## Vulnerability comparison
 
-| Vulnerability | In the lab | In the secured app |
-|---|---|---|
-| SQL injection, login | In **Username**, enter `lab_user' --` and any wrong password; sign-in succeeds. | Try the same input at `https://127.0.0.1:5443/login`; sign-in is rejected. |
-| SQL injection, registration | Enter `injected_admin', 'injectedhash', 'admin') --` as the lab username; the resulting record has role `admin`. | The same registration string is rejected by validation; parameterized queries prevent changing SQL structure. |
-| Weak password storage | Inspect `instance/lab.sqlite3` → `users.password_md5`; values are 32-character MD5 digests. | Inspect `instance/secure.sqlite3` → `users.password_hash`; values use the salted `$argon2id$` format. |
-| Stored XSS | Sign into the lab, save a note containing `<img src=x onerror=alert(1)>`; the element is emitted unescaped on the dashboard. | Save the same note in the secure app; HTML is stripped before storage and output is escaped. |
-| Broken access control | Sign in as `lab_user`, visit `/admin`; the directory is visible. | Sign in as any ordinary user, visit `/admin`; receive **403 Access denied**. |
-| Data / transport encryption | The lab uses plain HTTP and does not encrypt personal contact fields. | The secure app uses TLS for local HTTPS, encrypted email and session tokens, and protected cookies. |
+| Topic | Intentionally vulnerable lab | Secure application |
+| --- | --- | --- |
+| SQL injection | Unsafe SQL string interpolation | Parameterized queries and input validation |
+| Password storage | MD5 hashes | Salted Argon2id hashes |
+| Stored XSS | Unsafe rendering of note content | Sanitization and Jinja2 escaping |
+| Access control | Missing role enforcement on the admin page | Server-side role checks |
+| Personal data / transport | Plain HTTP and no email encryption | Local HTTPS and Fernet encryption |
 
-All examples must stay inside this loopback-only project lab. They are **not** intended for testing systems owned by anyone else.
+For reproducible demonstration steps and code locations, see [the demonstration guide](docs/DEMONSTRATION_GUIDE.md).
 
-## 4. Automated security tests
+## Automated tests
 
-From the project root:
+With dependencies installed, run:
 
-```bash
-pytest -q
+```powershell
+python -m pytest -q
 ```
 
-**Latest regression result:** `39 passed` on 21 November 2026 in a separate Linux test environment. Run `python -m pytest -q` on your own installation to verify the checked-out version.
+Tests use isolated temporary databases and keys, rather than modifying your personal account data. The suite covers secure routes, the vulnerable lab, and regression scenarios including CSRF, encrypted storage, role restrictions, XSS mitigation, and session revocation.
 
-The test suite creates temporary databases and separate keys, so it does not change normal application data. Security cases include SQL injection in both forms, MD5-versus-Argon2id storage, password complexity, HTML sanitization, RBAC, encryption at rest, cookie flags, session revocation, browser cache restrictions, CSRF checks, HTTPS redirects, and a self-signed certificate with the expected subject alternative name.
+**Verification:** The original local checkout reported **37 passing tests**. The GitHub version has two additional regression tests; run the command above after pulling to confirm the updated count in your own environment.
 
-See `docs/SECURITY_REPORT.pdf` for the testing table, access-control matrix, explanations, and a discussion of implementation challenges. The editable report source is `docs/SECURITY_REPORT.md`. To regenerate the PDF, install `requirements-report.txt` and run `python scripts/build_report.py`.
-
-## 5. Application structure
+## Project structure
 
 ```text
 RiskCrest/
 ├── app/
-│   ├── main.py                 # Secure routes, validation, RBAC, sessions, HTTPS
-│   ├── db.py                   # SQLite schema, transactions, parameterized access
-│   ├── security.py             # Argon2id, Fernet, CSRF, content sanitization
-│   ├── templates/              # Jinja2 pages and accessible forms
-│   └── static/                 # Responsive CSS, small local JavaScript
+│   ├── main.py              # Secure FastAPI application
+│   ├── db.py                # SQLite persistence
+│   ├── security.py          # Password hashing, encryption, CSRF, sanitization
+│   ├── templates/           # Pages for home, auth, dashboard and admin
+│   └── static/              # Original RiskCrest SVGs, CSS and JavaScript
 ├── lab/
-│   └── main.py                 # Isolated intentionally vulnerable baseline
+│   └── main.py              # Deliberately vulnerable local baseline
 ├── scripts/
-│   ├── create_admin.py         # Interactive administrator provisioning
-│   └── create_dev_cert.py      # Local self-signed TLS certificate generation
-├── tests/
-│   ├── test_secure.py          # Fixed-state tests
-│   └── test_lab.py             # Reproducible before-state tests
+│   ├── create_admin.py      # Local administrator creation
+│   └── create_dev_cert.py   # Self-signed development TLS certificate
+├── tests/                   # Automated security regression tests
 ├── docs/
-│   ├── SECURITY_REPORT.pdf     # Report for submission
-│   ├── SECURITY_REPORT.md      # Editable text version of report
-│   └── screenshots/            # Actual rendered application views
-├── instance/                   # Runtime databases/keys, excluded from Git
+│   └── DEMONSTRATION_GUIDE.md
+├── instance/                # Runtime data; ignored by Git except .gitkeep
 ├── run_secure.py
 ├── run_lab.py
 ├── requirements.txt
-├── .gitignore
 └── README.md
 ```
 
-## 6. Main security decisions
+## Local data and privacy
 
-- **Parameterized queries:** Secure account creation, login, data updates, and notes bind user-supplied values using SQLite `?` parameters instead of building SQL text from input.
-- **Password hashing:** Argon2id with 19 MiB of memory, two iterations, one lane, and a unique random salt per hash. Passwords are never stored as plaintext or reversible encryption.
-- **XSS defenses:** Bleach strips HTML from note content; Jinja2 autoescaping treats stored content as text. The secure application never uses `|safe` for user-authored notes.
-- **RBAC:** The server loads the authenticated account's role from the database for each request. `/admin` allows administrators only; creating a public account always assigns `user`.
-- **Encryption:** Fernet protects optional email addresses at rest and encrypts the opaque authentication ticket placed in a cookie. Only a SHA-256 digest of the raw ticket is stored in the server-side session table.
-- **HTTPS:** `run_secure.py` uses TLS with a locally generated certificate; HTTP is redirected to HTTPS. Cookie flags include `Secure`, `HttpOnly`, and `SameSite=Lax`.
-- **Logout:** The active session digest is deleted from the database, the browser cookie is deleted, and private responses use `Cache-Control: no-store` to prevent stale content after logout.
-- **Additional controls:** CSRF signatures, 30-minute expiry, input validation, restrictive content security policy, and anti-clickjacking/anti-sniffing headers.
+Local databases, encryption keys, certificates, virtual environments, and environment secrets are excluded through `.gitignore`. **Do not delete local `instance/keys/` files while encrypted data must remain readable.**
 
-## 7. Running and inspecting evidence
+The project report and submission-specific screenshots are maintained separately from the runnable code repository. The repository's Git history may still contain earlier documentation; deleting a file in a new commit does not erase it from past commits.
 
-Screenshots are in `docs/screenshots/`:
+RiskCrest is an educational implementation, **not an audited production service**. Production deployment would require stronger operational controls, trusted TLS, secret-management and key-rotation procedures, monitoring, rate limiting, and a formal security review.
 
-- `01-home.png` - home page
-- `02-registration.png` - registration with password rules
-- `03-login.png` - sign-in interface
-- `04-dashboard.png` - signed-in account and notes
-- `05-administration.png` - administrator-only account list
-- `06-mobile-home.png` - responsive mobile layout
-
-For a live demonstration: show the secure registration/login flow; demonstrate a standard user gets 403 from `/admin`; save an XSS-style note safely; show encrypted data in SQLite; log out and revisit `/dashboard`; then start the lab and repeat the corresponding unsafe examples. Finish by running `pytest -q`.
-
-## 8. GitHub and project updates
-
-This repository is the source of the RiskCrest application. To get the latest changes into an existing VS Code checkout, run `git pull origin main` from the project root, then run `python -m pytest -q`.
-
-The application runs **locally**; publishing its code to GitHub does not host the website. Never publish databases, credentials, private certificates, or runtime encryption keys. The vulnerable comparison app must never be deployed to a public server.
-
-## 9. Scope and references
-
-This is a course-scale application and local security test bench, **not a production deployment**. For a real deployment, use a publicly trusted TLS certificate, production-grade key management and backup/rotation, centralized audit logging, rate limiting, and security review. The vulnerable lab must never be deployed.
-
-Library documentation and security design references:
+## Technical references
 
 - [FastAPI documentation](https://fastapi.tiangolo.com/)
-- [Argon2-cffi documentation](https://argon2-cffi.readthedocs.io/)
-- [Cryptography Fernet](https://cryptography.io/en/stable/fernet/)
 - [OWASP SQL Injection Prevention](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html)
 - [OWASP Password Storage](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)
 - [OWASP Cross-Site Scripting Prevention](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)
+- [Argon2-cffi](https://argon2-cffi.readthedocs.io/)
+- [Cryptography Fernet](https://cryptography.io/en/stable/fernet/)
