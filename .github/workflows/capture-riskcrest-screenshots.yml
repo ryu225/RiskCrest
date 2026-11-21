@@ -23,8 +23,7 @@ jobs:
           python -m pip install -r requirements.txt
           python -m pip install playwright
           python -m playwright install --with-deps chromium
-      - name: Verify secure and vulnerable application tests (diagnostic only)
-        continue-on-error: true
+      - name: Verify secure and vulnerable application tests
         run: python -m pytest -q
       - name: Capture screenshots from real local browser sessions
         run: python -m scripts.capture_screenshots
