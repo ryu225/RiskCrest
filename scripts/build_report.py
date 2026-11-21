@@ -24,9 +24,9 @@ body_html = body_html.replace('<h2>7. Evidence and screenshots</h2>', '''
 
 styles = '''
 @page { size: A4; margin: 19mm 17mm 20mm 17mm;
-  @top-left { content: "SENTINEL / SECURITY ENGINEERING"; color: #7b8e97; font-family: DejaVu Sans, Arial, sans-serif; font-size: 7.7pt; letter-spacing: .12em; }
+  @top-left { content: "RISKCREST / SECURITY ENGINEERING"; color: #7b8e97; font-family: DejaVu Sans, Arial, sans-serif; font-size: 7.7pt; letter-spacing: .12em; }
   @top-right { content: "ASSESSMENT REPORT"; color: #7b8e97; font-family: DejaVu Sans, Arial, sans-serif; font-size: 7.7pt; letter-spacing: .12em; }
-  @bottom-left { content: "SENTINEL PORTAL   /   18 NOV 2026"; color: #9dadb1; font-family: DejaVu Sans, Arial, sans-serif; font-size: 7pt; }
+  @bottom-left { content: "RISKCREST   /   18 NOV 2026"; color: #9dadb1; font-family: DejaVu Sans, Arial, sans-serif; font-size: 7pt; }
   @bottom-right { content: "PAGE " counter(page); color: #496b77; font-family: DejaVu Sans, Arial, sans-serif; font-size: 7.5pt; }
 }
 @page:first { margin: 0; @top-left { content: none } @top-right { content: none } @bottom-left { content: none } @bottom-right { content: none } }
@@ -85,7 +85,7 @@ html = f'''<!doctype html><html><head><meta charset="utf-8"><style>{styles}</sty
   <div class="cover-eyebrow">INFORMATION SECURITY / PROJECT REPORT</div>
   <h1>Securing a web<br>application.<br><em>From vulnerable<br>to protected.</em></h1>
   <div class="cover-description">Building a Secure Web Application - Detection and Mitigation of Security Vulnerabilities</div>
-  <div class="cover-photo"><img src="screenshots/01-home.png" alt="Sentinel Portal home page"></div>
+  <div class="cover-photo"><img src="screenshots/01-home.png" alt="RiskCrest home page"></div>
   <div class="cover-footer">
     <div><div class="label">PREPARED BY</div><div class="value">Ryoouf Alsuwidany</div><div style="font-size:9pt;color:#8db8b6;margin-top:2mm">Student ID 443201098</div></div>
     <div class="right"><div class="label">SUBMISSION</div><div class="value">21 November 2026</div><div style="font-size:9pt;color:#8db8b6;margin-top:2mm">15-point assessment</div></div>

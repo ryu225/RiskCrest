@@ -104,7 +104,7 @@ From the project root:
 pytest -q
 ```
 
-**Verified local result on 18 November 2026:** `37 passed`.
+**Latest regression result:** `39 passed` on 21 November 2026 in a separate Linux test environment. Run `python -m pytest -q` on your own installation to verify the checked-out version.
 
 The test suite creates temporary databases and separate keys, so it does not change normal application data. Security cases include SQL injection in both forms, MD5-versus-Argon2id storage, password complexity, HTML sanitization, RBAC, encryption at rest, cookie flags, session revocation, browser cache restrictions, CSRF checks, HTTPS redirects, and a self-signed certificate with the expected subject alternative name.
 
