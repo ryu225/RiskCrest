@@ -132,7 +132,7 @@ RiskCrest/
 
 Local databases, encryption keys, certificates, virtual environments, and environment secrets are excluded through `.gitignore`. **Do not delete local `instance/keys/` files while encrypted data must remain readable.**
 
-The project report and submission-specific screenshots are maintained separately from the runnable code repository. The repository's Git history may still contain earlier documentation; deleting a file in a new commit does not erase it from past commits.
+The project report is submitted separately. Actual browser screenshots of both apps, captured from synthetic demo accounts, are available in [docs/screenshots/](docs/screenshots/). The repository's Git history may still contain earlier documentation; deleting a file in a new commit does not erase it from past commits.
 
 RiskCrest is an educational implementation, **not an audited production service**. Production deployment would require stronger operational controls, trusted TLS, secret-management and key-rotation procedures, monitoring, rate limiting, and a formal security review.
 
